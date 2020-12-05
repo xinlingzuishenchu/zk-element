@@ -1,74 +1,75 @@
 <template>
   <el-container class="homeList">
-      <el-main>
-        <el-tabs v-model="activeName" @tab-click="tabClick">
-          <el-tab-pane 
-            v-for="(item,index) in menuList" 
-            :key="item.index" 
-            :label="item.name" 
-            :name="index+''"
-            class="tabList"
-            >
-            <el-row :gutter="10" class="panel-group">
-            <el-col 
-              :xs="12" 
-              :sm="12" 
-              :lg="6" 
-              v-for="(list,todo) in item.children" 
+    <el-main>
+      <el-tabs v-model="activeName" @tab-click="tabClick">
+        <el-tab-pane
+          v-for="(item,index) in menuList"
+          :key="item.index"
+          :label="item.name"
+          :name="index+''"
+          class="tabList"
+        >
+          <el-row :gutter="10" class="panel-group">
+            <el-col
+              v-for="(list,todo) in item.children"
               :key="todo"
-              class="card-panel-col">
-                  <div class="card-panel" @click="getLeftMent(todo)">
-                      <div class="card-panel-icon-wrapper icon-people">
-                        <svg-icon icon-class="peoples" class-name="card-panel-icon" />
-                      </div>
-                      <div class="card-panel-description">
-                          <div class="card-panel-text">
-                            {{ list.name }}
-                          </div>
-                          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
-                      </div>
+              :xs="12"
+              :sm="12"
+              :lg="6"
+              class="card-panel-col"
+            >
+              <div class="card-panel" @click="getLeftMent(list.name)">
+                <div class="card-panel-icon-wrapper icon-people">
+                  <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+                </div>
+                <div class="card-panel-description">
+                  <div class="card-panel-text">
+                    {{ list.name }}
                   </div>
+                  <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+                </div>
+              </div>
             </el-col>
           </el-row>
-          </el-tab-pane>
+        </el-tab-pane>
       </el-tabs>
-      </el-main>
-    </el-container>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
 import CountTo from 'vue-count-to'
-import vueEvent from "@/store/vueEvent"
+import vueEvent from '@/store/vueEvent'
 
 export default {
-  data(){
-    return {
-      activeName: "0",
-      menuList: [],//豆腐块列表
-    }
-  },
   components: {
     CountTo
   },
+  data() {
+    return {
+      activeName: '0',
+      menuList: []// 豆腐块列表
+    }
+  },
   created() {
-    this.homeMenu();
+    this.homeMenu()
   },
   methods: {
     homeMenu() {
-        this.$store.dispatch('user/homeMenu')
+      this.$store.dispatch('user/homeMenu')
         .then((res) => {
-          this.menuList = res;
+          this.menuList = res
         })
         .catch(() => {
-          this.menuList = [];
+          this.menuList = []
         })
     },
     tabClick(tab, event) {
-      console.log(tab, event);
+      console.log(tab, event)
     },
     getLeftMent(type) {
       // vueEvent.$emit("send",type);
-      let that = this;
+      const that = this
       // if(type == "0"){
       //     that.leftmenus = require("@/router/modules/tenant");
       // }else if(type == "1"){
@@ -80,9 +81,9 @@ export default {
 
       that.$store.dispatch('permission/activeMenu', type).then((res) => {
         console.log(res)
-              this.$router.push(res);
+        this.$router.push(res)
       }).catch(() => {
-              
+
       })
     }
   }

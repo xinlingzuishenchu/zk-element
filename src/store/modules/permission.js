@@ -41,41 +41,40 @@ const state = {
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
-    let leftMenu = routes;
-    if(sessionStorage.getItem('leftMenu')){
-        leftMenu =require("@/router/modules/workflow").default;
+    let leftMenu = routes
+    if (sessionStorage.getItem('leftMenu')) {
+      leftMenu = require('@/router/modules/workflow').default
     }
     router.addRoutes(leftMenu)
-    state.addRoutes = leftMenu;
+    state.addRoutes = leftMenu
     state.routes = constantRoutes.concat(leftMenu)
   }
 }
 
 const actions = {
-  defaultMenu({ commit }, roles){
-      return new Promise(resolve => {
-        let accessedRoutes = filterAsyncRoutes(asyncRoutes, roles);
-        commit('SET_ROUTES', accessedRoutes)
-        resolve(accessedRoutes)
-      })
+  defaultMenu({ commit }, roles) {
+    return new Promise(resolve => {
+      const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+      commit('SET_ROUTES', accessedRoutes)
+      resolve(accessedRoutes)
+    })
   },
   activeMenu({ commit }, type) {
-      return new Promise(resolve => {
-        if(type == "0"){
-            that.leftmenus = require("@/router/modules/tenant");
-        }else if(type == "1"){
-            that.leftmenus = require("@/router/modules/user");
-        }else if(type == "6"){
-            let leftmenu = require("@/router/modules/workflow");
-            commit('SET_ROUTES', leftmenu.default)
-            leftmenu.default.push({ path: '*', redirect: '/404', hidden: true })
-            console.log(leftmenu.default)
-            sessionStorage.setItem('leftMenu', 6);
-            
-            resolve('/workGlobal')
-        }
-      })
-      
+    return new Promise(resolve => {
+      if (type == '0') {
+        that.leftmenus = require('@/router/modules/tenant')
+      } else if (type == '1') {
+        that.leftmenus = require('@/router/modules/user')
+      } else if (type == '流程中心') {
+        const leftmenu = require('@/router/modules/workflow')
+        commit('SET_ROUTES', leftmenu.default)
+        leftmenu.default.push({ path: '*', redirect: '/404', hidden: true })
+        console.log(leftmenu.default)
+        sessionStorage.setItem('leftMenu', '流程中心')
+
+        resolve('/workGlobal')
+      }
+    })
   },
   generateRoutes({ commit }, roles) {
     console.log(roles)

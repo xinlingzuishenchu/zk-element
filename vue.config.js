@@ -41,7 +41,7 @@ module.exports = {
     proxy: {
         '/dev-api': {
             /* 目标代理服务器地址 */
-            target: 'http://172.16.101.78:18080',
+            target: 'http://114.116.230.183:18080',
             /* 允许跨域 */
             changeOrigin: true,
             pathRewrite:{  // 路径重写，
